@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	ccloud "github.com/cgroschupp/go-client-confluent-cloud/confluentcloud"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	ccloud "github.com/worldremit/go-client-confluent-cloud/confluentcloud"
 )
 
 func kafkaClusterResource() *schema.Resource {
@@ -88,7 +88,7 @@ func kafkaClusterResource() *schema.Resource {
 				ForceNew:    true,
 				Description: "Deployment settings. Currently only `sku` is supported.",
 				Elem: &schema.Schema{
-					Type:     schema.TypeString,
+					Type: schema.TypeString,
 				},
 			},
 			"cku": {

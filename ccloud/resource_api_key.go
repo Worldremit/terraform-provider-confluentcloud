@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
-	ccloud "github.com/cgroschupp/go-client-confluent-cloud/confluentcloud"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	ccloud "github.com/worldremit/go-client-confluent-cloud/confluentcloud"
 )
 
 func apiKeyResource() *schema.Resource {
@@ -38,12 +39,12 @@ func apiKeyResource() *schema.Resource {
 				Description: "Logical Cluster ID List to create API Key",
 			},
 			"target_resource_type": {
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Default: "kafka_cluster",
-				Description: "Type of the resource to which the api keys are created for.",
-				ValidateFunc: validation.StringInSlice([]string { "kafka_cluster", "schema_registry" }, false),
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Default:      "kafka_cluster",
+				Description:  "Type of the resource to which the api keys are created for.",
+				ValidateFunc: validation.StringInSlice([]string{"kafka_cluster", "schema_registry"}, false),
 			},
 			"user_id": {
 				Type:        schema.TypeInt,
@@ -173,8 +174,13 @@ func apiKeyDelete(ctx context.Context, d *schema.ResourceData, meta interface{})
 	}
 
 	id := d.Id()
-	log.Printf("[INFO] Deleting API key %s in account %s", id, accountID)
-	err := c.DeleteAPIKey(id, accountID, logicalClustersReq)
+	IntAccountID, _ := strconv.Atoi(accountID)
+	serviceAccount, err := c.ReadServiceAccount(IntAccountID)
+	if serviceAccount != nil && err.Error() == "service_accounts: User Not Found" {
+		log.Printf("[INFO] Deleting API key %s in account %s", id, accountID)
+		err := c.DeleteAPIKey(id, accountID, logicalClustersReq)
+		return diag.FromErr(err)
+	}
 
-	return diag.FromErr(err)
+	return nil
 }
