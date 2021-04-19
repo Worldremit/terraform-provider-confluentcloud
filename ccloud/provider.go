@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	confluentcloud "github.com/cgroschupp/go-client-confluent-cloud/confluentcloud"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	confluentcloud "github.com/worldremit/go-client-confluent-cloud/confluentcloud"
 )
 
 func Provider() *schema.Provider {

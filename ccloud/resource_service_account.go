@@ -6,9 +6,9 @@ import (
 	"log"
 	"strconv"
 
-	ccloud "github.com/cgroschupp/go-client-confluent-cloud/confluentcloud"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	ccloud "github.com/worldremit/go-client-confluent-cloud/confluentcloud"
 )
 
 func serviceAccountResource() *schema.Resource {
