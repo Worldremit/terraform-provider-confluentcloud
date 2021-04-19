@@ -23,7 +23,7 @@ CGO_ENABLED=0 gox \
     -os="${GOOS}" \
     -arch="${GOARCH}" \
     -osarch="!darwin/arm" \
-    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/${NAME}" ${PWD}/../../
+    -output="${BUILD_DIR}/{{.OS}}_{{.Arch}}/${NAME}" ${PWD}/../../
 
 printf "\033[36m==> Compress binary\033[0m\n"
 
