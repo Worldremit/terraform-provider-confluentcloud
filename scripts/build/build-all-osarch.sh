@@ -29,7 +29,7 @@ printf "\033[36m==> Compress binary\033[0m\n"
 
 for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
     OSARCH=$(basename ${platform})
-    FULLNAME="${NAME}-${VERSION}-${OSARCH}"
+    FULLNAME="${NAME}_${VERSION}_${OSARCH}"
 
     case "${OSARCH}" in
     "windows"*)
@@ -58,7 +58,7 @@ done
 cd ${BUILD_DIR}
 touch ${NAME}-${VERSION}.sha256sum
 
-for binary in $(find . -mindepth 1 -maxdepth 1 -type f | grep -v "${NAME}-${VERSION}.sha256sum" | sort); do
+for binary in $(find . -mindepth 1 -maxdepth 1 -type f | grep -v "${NAME}_${VERSION}.sha256sum" | sort); do
     binary=$(basename ${binary})
 
     if command -v sha256sum >/dev/null; then
@@ -69,4 +69,4 @@ for binary in $(find . -mindepth 1 -maxdepth 1 -type f | grep -v "${NAME}-${VERS
 done
 
 cd - >/dev/null 2>&1
-printf -- "\n--> %15s: bin/%s\n" "sha256sum" "${NAME}-${VERSION}.sha256sum"
+printf -- "\n--> %15s: bin/%s\n" "sha256sum" "${NAME}_${VERSION}.sha256sum"
