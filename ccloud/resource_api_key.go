@@ -174,7 +174,7 @@ func apiKeyDelete(ctx context.Context, d *schema.ResourceData, meta interface{})
 	}
 
 	id := d.Id()
-	serviceAccount, _ := c.ReadServiceAccount(userID)
+	serviceAccount, err := c.ReadServiceAccount(userID)
 	log.Printf("[INFO] User %d exist: %t", userID, serviceAccount != nil)
 	if serviceAccount != nil {
 		log.Printf("[INFO] Deleting API key %s in account %s", id, accountID)
@@ -182,5 +182,8 @@ func apiKeyDelete(ctx context.Context, d *schema.ResourceData, meta interface{})
 		return diag.FromErr(err)
 	}
 
-	return nil
+	if err != nil && err.Error() == "service_accounts: User Not Found" {
+		return nil
+	}
+	return diag.FromErr(err)
 }
