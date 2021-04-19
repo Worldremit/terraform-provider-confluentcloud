@@ -175,10 +175,12 @@ func apiKeyDelete(ctx context.Context, d *schema.ResourceData, meta interface{})
 
 	id := d.Id()
 	serviceAccount, _ := c.ReadServiceAccount(userID)
+	log.Printf("[INFO] User %d exist: %t", userID, serviceAccount != nil)
 	if serviceAccount != nil {
 		log.Printf("[INFO] Deleting API key %s in account %s", id, accountID)
 		err := c.DeleteAPIKey(id, accountID, logicalClustersReq)
 		return diag.FromErr(err)
 	}
+
 	return nil
 }
