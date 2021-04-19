@@ -50,6 +50,14 @@ build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$
 	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)"
 
+.PHONY: build-all-and-install
+build-all: GOOS      = linux darwin
+build-all: GOARCH    = amd64
+build-all: clean ## Build binary for all OS/ARCH
+	@ $(MAKE) --no-print-directory log-$
+	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)"
+	mv ./bin/linux-amd64/terraform-provider-confluentcloud ~/.terraform.d/plugins/registry.terraform.io/worldremit/confluentcloud/0.0.10-0/linux_amd64/terraform-provider-confluentcloud_0.0.10-0_linux_amd64
+
 .PHONY: test
 test:
 	$(GOCMD) test ./...

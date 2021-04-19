@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strconv"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -159,6 +158,7 @@ func apiKeyDelete(ctx context.Context, d *schema.ResourceData, meta interface{})
 	clusterID := d.Get("cluster_id").(string)
 	logicalClusters := d.Get("logical_clusters").([]interface{})
 	accountID := d.Get("environment_id").(string)
+	userID := d.Get("user_id").(int)
 
 	logicalClustersReq := []ccloud.LogicalCluster{}
 	if len(clusterID) > 0 {
@@ -174,13 +174,11 @@ func apiKeyDelete(ctx context.Context, d *schema.ResourceData, meta interface{})
 	}
 
 	id := d.Id()
-	IntAccountID, _ := strconv.Atoi(accountID)
-	serviceAccount, err := c.ReadServiceAccount(IntAccountID)
-	if serviceAccount != nil && err.Error() == "service_accounts: User Not Found" {
+	serviceAccount, _ := c.ReadServiceAccount(userID)
+	if serviceAccount != nil {
 		log.Printf("[INFO] Deleting API key %s in account %s", id, accountID)
 		err := c.DeleteAPIKey(id, accountID, logicalClustersReq)
 		return diag.FromErr(err)
 	}
-
 	return nil
 }
