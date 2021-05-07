@@ -43,7 +43,7 @@ func apiKeyResource() *schema.Resource {
 				ForceNew:     true,
 				Default:      "kafka_cluster",
 				Description:  "Type of the resource to which the api keys are created for.",
-				ValidateFunc: validation.StringInSlice([]string{"kafka_cluster", "schema_registry"}, false),
+				ValidateFunc: validation.StringInSlice([]string{"kafka_cluster", "schema_registry", "cloud"}, false),
 			},
 			"user_id": {
 				Type:        schema.TypeInt,
