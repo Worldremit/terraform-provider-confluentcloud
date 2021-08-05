@@ -127,7 +127,7 @@ func apiKeyCreate(ctx context.Context, d *schema.ResourceData, meta interface{})
 				Pending:      []string{"Pending"},
 				Target:       []string{"Ready"},
 				Refresh:      clusterReady(c, clusterID, accountID, key.Key, key.Secret),
-				Timeout:      300 * time.Second,
+				Timeout:      900 * time.Second,
 				Delay:        10 * time.Second,
 				PollInterval: 5 * time.Second,
 				MinTimeout:   20 * time.Second,
